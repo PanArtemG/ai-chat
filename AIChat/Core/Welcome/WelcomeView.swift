@@ -15,6 +15,7 @@ struct WelcomeView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     WelcomeView()
 }

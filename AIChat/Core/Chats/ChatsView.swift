@@ -16,6 +16,7 @@ struct ChatsView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ChatsView()
 }

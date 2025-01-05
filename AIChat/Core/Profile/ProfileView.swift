@@ -32,6 +32,7 @@ struct ProfileView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ProfileView()
 }
