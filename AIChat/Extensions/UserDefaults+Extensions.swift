@@ -1,5 +1,5 @@
 //
-//  UserDefaults+extensions.swift
+//  UserDefaults+Extensions.swift
 //  AIChat
 //
 //  Created by Artem Panasenko on 05.01.2025.
