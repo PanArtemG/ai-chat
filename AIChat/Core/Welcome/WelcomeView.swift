@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    
     @State var imageUrl = Constants.randomImageUrl
     
     private let termsURLString = Constants.termsOfServiceUrl
@@ -49,7 +48,7 @@ struct WelcomeView: View {
     private var ctaSection: some View {
         VStack(spacing: spacing) {
             NavigationLink {
-                OnboardingCompletedView()
+                OnboardingIntroView()
             } label: {
                 Text("Get Started")
                     .callToActionButton()

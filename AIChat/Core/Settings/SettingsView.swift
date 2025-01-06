@@ -16,8 +16,7 @@ struct SettingsView: View {
                 Button {
                     onSignOutPressed()
                 } label: {
-                    Text("Sign Out")
-
+                    Text("Sign Out") 
                 }
             }
             .navigationTitle("Settings")
@@ -30,6 +29,7 @@ struct SettingsView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     SettingsView()
         .environment(AppState())
