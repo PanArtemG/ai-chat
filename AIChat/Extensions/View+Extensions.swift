@@ -22,4 +22,10 @@ extension View {
             .background(.accent)
             .cornerRadius(cornerRadius)
     }
+    
+    /// View modifier used for for a larger area of ​​view
+    /// - Returns: `View`
+    func tappableBackground() -> some View {
+        background(.green)
+    }
 }
