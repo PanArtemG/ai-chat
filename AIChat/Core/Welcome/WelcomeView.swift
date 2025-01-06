@@ -61,7 +61,7 @@ struct WelcomeView: View {
                 .padding(tapGesturePadding)
                 .foregroundStyle(.black)
                 .onTapGesture {
-                    
+                    // TODO: Future implementation
                 }
         }
     }
