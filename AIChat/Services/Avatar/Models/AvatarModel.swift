@@ -8,7 +8,7 @@
 import Foundation
 
 /// Model use for representation `Avatar`
-struct AvatarModel {
+struct AvatarModel: Hashable {
     /// A model identifier
     let id: String
     
