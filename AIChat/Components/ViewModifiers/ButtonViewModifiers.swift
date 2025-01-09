@@ -12,6 +12,7 @@ import SwiftUI
 enum ButtonStyleOption {
     case press
     case highlight
+    case plain
 }
 
 // MARK: - Implementation
@@ -19,7 +20,7 @@ enum ButtonStyleOption {
 struct HighlightButtonStyle: ButtonStyle {
     private var colorWhenPressed: Color = Color.accent.opacity(0.4)
     private var defaultColor: Color = Color.accent.opacity(0)
-
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .overlay {
@@ -33,7 +34,7 @@ struct HighlightButtonStyle: ButtonStyle {
 struct PressableButtonStyle: ButtonStyle {
     private var colorWhenPressed: Color = Color.accent.opacity(0.4)
     private var defaultColor: Color = Color.accent.opacity(0)
-
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.95 : 1)
@@ -44,15 +45,21 @@ struct PressableButtonStyle: ButtonStyle {
 // MARK: - Extension
 extension View {
     @ViewBuilder
-    func anyButton(option: ButtonStyleOption, action: @escaping () -> Void) -> some View {
+    func anyButton(
+        _ option: ButtonStyleOption = .plain,
+        action: @escaping () -> Void
+    ) -> some View {
         switch option {
         case .press:
             self.pressableButton(action: action)
         case .highlight:
             self.highlightButton(action: action)
+        case .plain:
+            self.plainButton(action: action)
         }
     }
     
+    /// Custom  style as`HighlightButtonStyle`
     private func highlightButton(action: @escaping () -> Void) -> some View {
         Button {
             action()
@@ -62,6 +69,7 @@ extension View {
         .buttonStyle(HighlightButtonStyle())
     }
     
+    /// Custom  style as`PressableButtonStyle`
     private func pressableButton(action: @escaping () -> Void) -> some View {
         Button {
             action()
@@ -69,6 +77,16 @@ extension View {
             self
         }
         .buttonStyle(PressableButtonStyle())
+    }
+    
+    /// Default  style as`PlainButtonStyle`
+    private func plainButton(action: @escaping () -> Void) -> some View {
+        Button {
+            action()
+        } label: {
+            self
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -79,14 +97,21 @@ extension View {
             .padding()
             .frame(maxWidth: .infinity)
             .tappableBackground()
-            .anyButton(option: .highlight, action: {
+            .anyButton(.highlight, action: {
                 // action
             })
             .padding()
         
         Text("Hello, World!")
             .callToActionButton()
-            .anyButton(option: .press, action: {
+            .anyButton(.press, action: {
+                // action
+            })
+            .padding()
+        
+        Text("Hello, World!")
+            .callToActionButton()
+            .anyButton(action: {
                 // action
             })
             .padding()

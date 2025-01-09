@@ -40,6 +40,17 @@ struct AvatarDescriptionBuilder {
     
     /// Build description for  an`Avatar`
     var characterDescription: String {
-        "A \(characterOption.rawValue) that is \(characterAction.rawValue) in the \(characterLocation.rawValue)"
+        let prefix = isStartsWithVowel ? "An" : "A"
+        let description =  "\(prefix) \(characterOption.rawValue) that is \(characterAction.rawValue) in the \(characterLocation.rawValue)"
+        return description
+    }
+    
+    // MARK: - Private
+    /// Checks which letter (vowels or consonants) a option starts with
+    private var isStartsWithVowel: Bool {
+        let vowels = ["a", "e", "i", "o", "u"]
+        let optionPrefixLength = 1
+        let optionPrefix = characterOption.rawValue.prefix(optionPrefixLength).lowercased()
+        return vowels.contains(optionPrefix)
     }
 }

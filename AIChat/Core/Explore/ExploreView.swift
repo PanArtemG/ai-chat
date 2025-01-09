@@ -10,6 +10,7 @@ import SwiftUI
 struct ExploreView: View {
     @State private var featuredAvatars: [AvatarModel] = AvatarModel.mocks
     @State private var categories: [CharacterOption] = CharacterOption.allCases
+    @State private var popularAvatars: [AvatarModel] = AvatarModel.mocks
     
     private let categorySectionHeight: CGFloat = 140
     private let spacing: CGFloat = 12
@@ -19,7 +20,9 @@ struct ExploreView: View {
             List {
                 featuredSection
                 categorySection
+                popularSection
             }
+            .navigationTitle("Explore")
         }
     }
     
@@ -33,11 +36,14 @@ struct ExploreView: View {
                         subtitle: avatar.characteDescription,
                         imageUrl: avatar.profileImageUrl
                     )
+                    .anyButton(.highlight) {
+                        // action
+                    }
                 }
             }
             .removeListFormatting()
         } header: {
-            Text("Featured Avatars")
+            Text("Featured")
         }
     }
     
@@ -51,8 +57,10 @@ struct ExploreView: View {
                                 title: category.rawValue.capitalized,
                                 imageUrlString: Constants.randomImageUrl
                             )
+                            .anyButton(.plain) {
+                                // action
+                            }
                         }
-                        
                     }
                 }
                 .frame(height: categorySectionHeight)
@@ -63,6 +71,24 @@ struct ExploreView: View {
             .removeListFormatting()
         } header: {
             Text("Categories")
+        }
+    }
+    
+    private var popularSection: some View {
+        Section {
+            ForEach(popularAvatars, id: \.self) { avatar in
+                CustomListCellView(
+                    imageUrl: avatar.profileImageUrl,
+                    title: avatar.name,
+                    subtitle: avatar.characteDescription
+                )
+                .anyButton(.highlight) {
+                    // action
+                }
+                .removeListFormatting()
+            }
+        } header: {
+            Text("Popular")
         }
     }
 }
