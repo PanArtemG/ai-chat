@@ -8,6 +8,9 @@
 import SwiftUI
 
 extension View {
+    
+    // MARK: - View modifiers
+    
     /// View modifier used for call to action button
     /// - Parameters:
     ///   - cornerRadius: as `CGFloat`. Default value equal `16`
@@ -23,9 +26,39 @@ extension View {
             .cornerRadius(cornerRadius)
     }
     
-    /// View modifier used for for a larger area of ​​view
+    /// Added background for  readability
     /// - Returns: `View`
-    func tappableBackground() -> some View {
-        background(.green)
+    func addingGradientBackgroundForText() -> some View {
+        background(
+            LinearGradient(
+                colors: [
+                    .black.opacity(0),
+                    .black.opacity(0.3),
+                    .black.opacity(0.5)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
+    }
+    
+    // TODO: Remove after complete
+    /*
+     /// View modifier used for for a larger area of ​​view
+     /// - Returns: `View`
+     func tappableBackground() -> some View {
+     background(.black.opacity(0.001))
+     }
+     */
+    
+    // MARK: - List modifiers
+    
+    /// Setup list row's `inset` and `background`
+    /// Inset as `EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)`
+    /// Background as `Color.clear`
+    /// - Returns: `View`
+    func removeListFormatting() -> some View {
+        self
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowBackground(Color.clear)
     }
 }

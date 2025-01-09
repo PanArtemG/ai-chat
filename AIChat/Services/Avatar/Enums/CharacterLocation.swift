@@ -8,7 +8,14 @@
 import Foundation
 
 enum CharacterLocation: String {
-    case party, office, museum, city, forest, space, desert, mall
+    case party
+    case office
+    case museum
+    case city
+    case forest
+    case space
+    case desert
+    case mall
     
     static var `default`: Self {
         .desert

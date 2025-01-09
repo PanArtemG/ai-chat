@@ -8,7 +8,13 @@
 import Foundation
 
 enum CharacterAction: String {
-    case smiling, sitting, standing, walking, sleeping, eating, drinking
+    case smiling
+    case sitting
+    case standing
+    case walking
+    case sleeping
+    case eating
+    case drinking
     
     static var `default`: Self {
         .drinking
