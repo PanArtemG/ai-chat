@@ -41,14 +41,11 @@ extension View {
         )
     }
     
-    // TODO: Remove after complete
-    /*
      /// View modifier used for for a larger area of ​​view
      /// - Returns: `View`
-     func tappableBackground() -> some View {
-     background(.black.opacity(0.001))
-     }
-     */
+    func tappableBackground() -> some View {
+        background(.black.opacity(0.001))
+    }
     
     // MARK: - List modifiers
     
