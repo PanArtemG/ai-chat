@@ -9,11 +9,11 @@ import Foundation
 
 extension Avatar {
     // MARK: - Mocks
-    static var mock: Avatar {
+    static var mock: Self {
         mocks[0]
     }
     
-    static var mocks: [Avatar] {
+    static var mocks: [Self] {
         [
             .init(
                 id: UUID().uuidString,

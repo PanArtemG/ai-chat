@@ -18,6 +18,7 @@ struct ChatRowCellIView: View {
     private let paddingCellV: CGFloat = 12
     private let paddingCellH: CGFloat = 8
     private let cornerRadius: CGFloat = 6
+    private let avatarSize: CGFloat = 50
     
     var body: some View {
         HStack(spacing: spacingHS) {
@@ -30,7 +31,7 @@ struct ChatRowCellIView: View {
                         .fill(.secondary.opacity(0.5))
                 }
             }
-            .frame(width: 50, height: 50)
+            .frame(width: avatarSize, height: avatarSize)
             .clipShape(Circle())
             
             VStack(alignment: .leading, spacing: spacingVS) {
@@ -64,17 +65,17 @@ struct ChatRowCellIView: View {
         Color.gray.ignoresSafeArea()
         List {
             ChatRowCellIView()
-                .removeListFormatting()
+                .removeListRowFormatting()
             ChatRowCellIView(headline: nil, hasNewMessageInChat: false)
-                .removeListFormatting()
+                .removeListRowFormatting()
             ChatRowCellIView(imageUrl: nil)
-                .removeListFormatting()
+                .removeListRowFormatting()
             ChatRowCellIView(subheadline: nil)
-                .removeListFormatting()
+                .removeListRowFormatting()
             ChatRowCellIView(headline: nil)
-                .removeListFormatting()
+                .removeListRowFormatting()
             ChatRowCellIView()
-                .removeListFormatting()
+                .removeListRowFormatting()
         }
     }
 }

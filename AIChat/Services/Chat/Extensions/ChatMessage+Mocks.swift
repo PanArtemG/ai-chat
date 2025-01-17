@@ -9,11 +9,11 @@ import Foundation
 
 extension ChatMessage {
     // MARK: - Mocks
-    static var mock: ChatMessage {
+    static var mock: Self {
         mocks[0]
     }
     
-    static var mocks: [ChatMessage] {
+    static var mocks: [Self] {
         [
             ChatMessage(
                 id: UUID().uuidString,
