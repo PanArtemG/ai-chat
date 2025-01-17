@@ -1,5 +1,5 @@
 //
-//  AvatarModel+Mocks.swift
+//  Avatar+Mocks.swift
 //  AIChat
 //
 //  Created by Artem Panasenko on 07.01.2025.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension AvatarModel {
+extension Avatar {
     // MARK: - Mocks
-    static var mock: AvatarModel {
+    static var mock: Avatar {
         mocks[0]
     }
     
-    static var mocks: [AvatarModel] {
+    static var mocks: [Avatar] {
         [
             .init(
                 id: UUID().uuidString,

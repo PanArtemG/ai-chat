@@ -30,9 +30,9 @@ struct AvatarDescriptionBuilder {
         self.characterLocation = characterLocation ?? .default
     }
     
-    /// Initialize from model `AvatarModel`
-    /// - Parameter avatar: as `AvatarModel`
-    init (avatar: AvatarModel) {
+    /// Initialize from model `Avatar`
+    /// - Parameter avatar: as `Avatar`
+    init (avatar: Avatar) {
         self.characterOption = avatar.characterOption ?? .default
         self.characterAction = avatar.characterAction ?? .default
         self.characterLocation = avatar.characterLocation ?? .default

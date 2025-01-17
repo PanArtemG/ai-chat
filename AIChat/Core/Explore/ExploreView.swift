@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ExploreView: View {
-    @State private var featuredAvatars: [AvatarModel] = AvatarModel.mocks
+    @State private var featuredAvatars: [Avatar] = Avatar.mocks
     @State private var categories: [CharacterOption] = CharacterOption.allCases
-    @State private var popularAvatars: [AvatarModel] = AvatarModel.mocks
+    @State private var popularAvatars: [Avatar] = Avatar.mocks
     
     private let categorySectionHeight: CGFloat = 140
     private let spacing: CGFloat = 12

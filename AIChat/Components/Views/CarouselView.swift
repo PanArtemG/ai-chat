@@ -64,7 +64,7 @@ struct CarouselView<Content: View, T: Hashable>: View {
 
 // MARK: - Preview
 #Preview {
-    CarouselView(items: AvatarModel.mocks) { item in
+    CarouselView(items: Avatar.mocks) { item in
         HeroCellView(
             title: item.name,
             subtitle: item.characteDescription,
