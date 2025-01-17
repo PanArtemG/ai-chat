@@ -58,4 +58,20 @@ struct ChatMessage: Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
+    
+    /// Checks if the message has been seen by a specific user.
+    ///
+    /// This method determines whether a given user, identified by their `userId`,
+    /// is included in the list of users who have seen the message (`seenById`).
+    ///
+    /// - Parameter userId: The unique identifier of the user to check.
+    /// - Returns:
+    ///   - `true` if the user has seen the message (i.e., their `userId` is present in `seenById`).
+    ///   - `false` if the message has not been seen by the user, or if `seenById` is `nil` or empty.
+    func hasBeenSeenBy(userId: String) -> Bool {
+        guard let seenById, !seenById.isEmpty else {
+            return false
+        }
+        return seenById.contains(userId)
+    }
 }
