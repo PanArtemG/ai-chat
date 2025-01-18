@@ -9,7 +9,10 @@ import SwiftUI
 
 struct WelcomeView: View {
     @State var imageUrl = Constants.randomImageUrl
+    @State var showSigInView: Bool = false
     
+    private let title: String = "Sign In"
+    private let subtitle: String = "Connect to an existing account."
     private let termsURLString = Constants.termsOfServiceUrl
     private let privacyPolicyURLString = Constants.privacyPolicyUrl
     private let headerPadding: CGFloat = 24
@@ -30,6 +33,13 @@ struct WelcomeView: View {
                 
                 termsSection
             }
+        }
+        .sheet(isPresented: $showSigInView) {
+            CreateAccountView(
+                title: title,
+                subtitle: subtitle
+            )
+            .presentationDetents([.medium])
         }
     }
     
@@ -60,11 +70,12 @@ struct WelcomeView: View {
                 .padding(tapGesturePadding)
                 .foregroundStyle(.black)
                 .onTapGesture {
-                    // TODO: Future implementation
+                    onSigInPressed()
                 }
         }
     }
     
+    // MARK: - Components
     private var termsSection: some View {
         HStack(spacing: spacing) {
             if let url = URL(string: termsURLString) {
@@ -83,6 +94,11 @@ struct WelcomeView: View {
                 }
             }
         }
+    }
+    
+    // MARK: - Busyness logik
+    func onSigInPressed() {
+        self.showSigInView = true
     }
 }
 
