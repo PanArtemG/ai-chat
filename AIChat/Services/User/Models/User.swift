@@ -58,4 +58,3 @@ struct User {
         return Color(hex: profileColorHex)
     }
 }
-

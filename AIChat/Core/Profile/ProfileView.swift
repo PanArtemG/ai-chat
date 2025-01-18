@@ -97,7 +97,7 @@ struct ProfileView: View {
         }
     }
     
-    // MARK: - Views
+    // MARK: - Views components
     private var settingsButton: some View {
         Image(systemName: "gear")
             .font(.headline)

@@ -41,5 +41,8 @@ extension Color {
         
         return String(format: "#%02X%02X%02X", red, green, blue)
     }
+    
+    static var systemBackground: Self {
+        Color(uiColor: .systemBackground)
+    }
 }
-
