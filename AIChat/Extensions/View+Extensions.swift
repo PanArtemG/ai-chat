@@ -11,7 +11,7 @@ extension View {
     
     // MARK: - View modifiers
     
-    /// View modifier used for call to action button
+    /// A view modifier that styles a view to appear as an action button
     /// - Parameters:
     ///   - cornerRadius: as `CGFloat`. Default value equal `16`
     ///   - height: as `CGFloat`. Default value equal `56`
@@ -24,6 +24,30 @@ extension View {
             .frame(height: height)
             .background(.accent)
             .cornerRadius(cornerRadius)
+    }
+    
+    /// A view modifier that styles a view to appear as a badge button.
+    ///
+    /// This modifier applies the following styles:
+    /// - Font: `caption`
+    /// - Text case: `uppercase`
+    /// - Text weight: `bold`
+    /// - Padding: `6`
+    /// - Foreground color: `white`
+    /// - Background color: `blue`
+    /// - Corner radius: `6`
+    ///
+    /// - Returns: A styled view that appears as a badge button.
+    func badgeButton() -> some View {
+        self
+            .font(.caption)
+            .textCase(.uppercase)
+            .bold()
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .foregroundStyle(.white)
+            .background(.blue)
+            .cornerRadius(6)
     }
     
     /// Added background for  readability
