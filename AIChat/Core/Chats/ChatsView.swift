@@ -15,22 +15,26 @@ struct ChatsView: View {
         NavigationStack {
             List {
                 ForEach(chats) { chat in
-                    ChatRowCellViewBuilder(
-                        currentUserId: nil, // FIXME: Add cuid
-                        chat: chat,
-                        getAvatar: {
-                            try? await Task.sleep(for: .seconds(2))
-                            return .mock
-                        },
-                        getLastMessage: {
-                            try? await Task.sleep(for: .seconds(2))
-                            return .mock
+                    NavigationLink {
+                        ChatView()
+                    } label: {
+                        ChatRowCellViewBuilder(
+                            currentUserId: nil, // FIXME: Add cuid
+                            chat: chat,
+                            getAvatar: {
+                                try? await Task.sleep(for: .seconds(2))
+                                return .mock
+                            },
+                            getLastMessage: {
+                                try? await Task.sleep(for: .seconds(2))
+                                return .mock
+                            }
+                        )
+                        .anyButton(.highlight) {
+                            
                         }
-                    )
-                    .anyButton(.highlight) {
-                        
+                        .removeListRowFormatting()
                     }
-                    .removeListRowFormatting()
                 }
             }
             .navigationTitle("Chats")
