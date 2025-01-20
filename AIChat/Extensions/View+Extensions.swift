@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
     
-    // MARK: - View modifiers
+    // MARK: - View's modifiers
     
     /// A view modifier that styles a view to appear as an action button
     /// - Parameters:
