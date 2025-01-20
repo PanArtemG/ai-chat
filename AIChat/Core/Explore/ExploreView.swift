@@ -26,7 +26,7 @@ struct ExploreView: View {
         }
     }
     
-    // MARK: - View components
+    // MARK: - View's components
     private var featuredSection: some View {
         Section {
             ZStack {

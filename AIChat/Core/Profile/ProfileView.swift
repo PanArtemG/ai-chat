@@ -32,7 +32,7 @@ struct ProfileView: View {
             SettingsView()
         }
         .fullScreenCover(isPresented: $showCreateAvatarView) {
-            Text("CreateAvatarView")
+            CreateAvatarView()
         }
         .task {
             await loadData()
@@ -97,7 +97,7 @@ struct ProfileView: View {
         }
     }
     
-    // MARK: - Views components
+    // MARK: - View's components
     private var settingsButton: some View {
         Image(systemName: "gear")
             .font(.headline)
