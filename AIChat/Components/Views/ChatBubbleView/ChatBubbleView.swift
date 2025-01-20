@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ChatBubbleView: View {
-    var text: String = "Sample Text!!!"
-    var textColor: Color = .primary
-    var messageColor: Color = .init(uiColor: .systemGray6)
+    var text: String
+    var textColor: Color
+    var messageColor: Color
     var showAvatar: Bool = true
     var imageUrlString: String?
     
@@ -54,17 +54,27 @@ struct ChatBubbleView: View {
 #Preview {
     ScrollView {
         VStack(spacing: 16) {
-            ChatBubbleView()
-            ChatBubbleView(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-            ChatBubbleView()
             ChatBubbleView(
+                text: "Sample text",
+                textColor: .primary,
+                messageColor: .init(uiColor: .systemGray6)
+            )
+            ChatBubbleView(
+                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                textColor: .primary,
+                messageColor: .init(uiColor: .systemGray6)
+            )
+            ChatBubbleView(
+                text: "Sample text",
                 textColor: .white,
                 messageColor: .accent,
                 showAvatar: false
             )
             ChatBubbleView(
                 text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                showAvatar: false
+                textColor: .primary,
+                messageColor: .init(uiColor: .systemGray6),
+                showAvatar: true
             )
             ChatBubbleView(
                 text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

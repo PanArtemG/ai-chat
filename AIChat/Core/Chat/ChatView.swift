@@ -13,6 +13,7 @@ struct ChatView: View {
     @State private var currentUser: User? = .mock
     
     private var messageSpacing: CGFloat = 24
+    private var padding: CGFloat = 8
     
     var body: some View {
         VStack(spacing: 0) {
@@ -29,11 +30,8 @@ struct ChatView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .padding(8)
+                .padding(padding)
             }
-            
-            Rectangle()
-                .frame(height: 50)
         }
         .navigationTitle(avatar?.name ?? "Chat")
         .toolbarTitleDisplayMode(.inline)

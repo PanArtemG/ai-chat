@@ -28,6 +28,8 @@ struct ChatBubbleViewBuilder: View {
         isCurrentUser ? .leading : .trailing
     }
     
+    private let messagePadding: CGFloat = 75
+    
     var body: some View {
         ChatBubbleView(
             text: message.content ?? "",
@@ -37,7 +39,7 @@ struct ChatBubbleViewBuilder: View {
             imageUrlString: avatarImageUrlString
         )
         .frame(maxWidth: .infinity, alignment: messageAlignment)
-        .padding(messageEdgeSet, 75)
+        .padding(messageEdgeSet, messagePadding)
     }
 }
 
