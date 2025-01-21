@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct TextValidationHelper {
     
     static func checkIfTextIsValid(text: String) throws {
