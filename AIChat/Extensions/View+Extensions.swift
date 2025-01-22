@@ -173,4 +173,94 @@ extension View {
                 }
         }
     }
+    
+    /// Conditionally applies a transformation to a SwiftUI view based on a boolean condition.
+    ///
+    /// This method enables the dynamic application of a modifier or transformation to the view
+    /// only if the specified condition evaluates to `true`. If the condition is `false`, the original view is returned unchanged.
+    ///
+    /// - Parameters:
+    ///   - condition: A boolean value that determines whether the transformation should be applied.
+    ///   - transform: A closure that defines the transformation or modifier to apply to the view
+    ///                when the condition is satisfied.
+    ///
+    /// - Returns: A view that is either the original or transformed, based on the condition.
+    ///
+    /// ### Usage Example:
+    /// ```swift
+    /// Text("Hello, World!")
+    ///     .ifSatisfiedCondition(true) { view in
+    ///         view.foregroundColor(.red)
+    ///     }
+    ///
+    /// Text("This is not modified")
+    ///     .ifSatisfiedCondition(false) { view in
+    ///         view.foregroundColor(.blue)
+    ///     }
+    /// ```
+    ///
+    /// ### Notes:
+    /// - This method is particularly useful for conditionally applying multiple modifiers in a clean and readable way.
+    @ViewBuilder
+    func ifSatisfiedCondition(_ condition: Bool, transform: (Self) -> some View) -> some View {
+        if condition {
+            transform(self) // Apply the transformation if the condition is true
+        } else {
+            self // Return the original view if the condition is false
+        }
+    }
+    
+    /// Displays a modal view over the current view when a binding condition is `true`.
+    ///
+    /// This method enables a modal presentation using an `overlay` mechanism. The modal's visibility
+    /// is controlled by a binding, and its content is defined by the provided closure.
+    ///
+    /// - Parameters:
+    ///   - showModal: A `Binding<Bool>` that determines whether the modal should be shown.
+    ///                When the binding's value is `true`, the modal appears.
+    ///   - content: A closure that defines the content of the modal. The closure returns a view to be displayed as the modal.
+    ///
+    /// - Returns: A view with a modal overlay that appears when `showModal` is `true`.
+    ///
+    /// ### Usage Example:
+    /// ```swift
+    /// struct ContentView: View {
+    ///     @State private var isModalVisible = false
+    ///
+    ///     var body: some View {
+    ///         VStack {
+    ///             Button("Show Modal") {
+    ///                 isModalVisible = true
+    ///             }
+    ///         }
+    ///         .showModal($isModalVisible) {
+    ///             VStack {
+    ///                 Text("This is a modal")
+    ///                 Button("Close") {
+    ///                     isModalVisible = false
+    ///                 }
+    ///             }
+    ///             .padding()
+    ///             .background(Color.white)
+    ///             .cornerRadius(8)
+    ///             .shadow(radius: 10)
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// ### Notes:
+    /// - The `content` closure defines the view displayed as the modal.
+    /// - The modal overlay is added using the `overlay` modifier, which positions it above the main view.
+    ///
+    /// ### See Also:
+    /// - `ModalSupportView` for handling modal behavior internally.
+    func showModal(_ showModal: Binding<Bool>, @ViewBuilder content: () -> some View) -> some View {
+        self
+            .overlay(
+                ModalSupportView(showModal: showModal) {
+                    content()
+                }
+            )
+    }
 }
