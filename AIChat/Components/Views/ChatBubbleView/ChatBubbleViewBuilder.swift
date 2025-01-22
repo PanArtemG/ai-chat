@@ -11,6 +11,7 @@ struct ChatBubbleViewBuilder: View {
     var message: ChatMessage = .mock
     var isCurrentUser: Bool = false
     var avatarImageUrlString: String?
+    var onAvatarImagePressed: (() -> Void)?
     
     private var textColor: Color {
         isCurrentUser ? .white : .primary
@@ -36,7 +37,8 @@ struct ChatBubbleViewBuilder: View {
             textColor: textColor,
             messageColor: messageColor,
             showAvatar: !isCurrentUser,
-            imageUrlString: avatarImageUrlString
+            imageUrlString: avatarImageUrlString,
+            onAvatarImagePressed: onAvatarImagePressed
         )
         .frame(maxWidth: .infinity, alignment: messageAlignment)
         .padding(messageEdgeSet, messagePadding)

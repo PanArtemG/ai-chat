@@ -13,8 +13,10 @@ struct ChatView: View {
     @State private var currentUser: User? = .mock
     @State private var inputText: String = ""
     @State private var scrollPosition: String?
+    
+    @State private var showAlert: AnyAppAlert?
     @State private var showChatSettings: AnyAppAlert?
-    @State private var alert: AnyAppAlert?
+    @State private var showProfileModal: Bool = false
     
     private let messageSpacing: CGFloat = 24
     private let cornerRadius: CGFloat = 100
@@ -24,6 +26,7 @@ struct ChatView: View {
     private let sizeButton: CGFloat = 32
     private let paddingHTextFieldSection: CGFloat = 12
     private let paddingVTextFieldSection: CGFloat = 6
+    private let paddingProfileModal: CGFloat = 40
     
     var body: some View {
         VStack(spacing: 0) {
@@ -46,10 +49,29 @@ struct ChatView: View {
             }
         }
         .showCustomAlert(type: .confirmationDialog, alert: $showChatSettings)
-        .showCustomAlert(alert: $alert)
+        .showCustomAlert(alert: $showAlert)
+        .showModal($showProfileModal) {
+            if let avatar {
+                profileModal(avatar: avatar)
+            }
+        }
     }
     
     // MARK: - View's components
+    private func profileModal(avatar: Avatar) -> some View {
+        ProfileModalView(
+            imageUrlString: avatar.profileImageUrl,
+            title: avatar.name,
+            subtitle: avatar.characterOption?.rawValue.capitalized,
+            headline: avatar.characteDescription,
+            onXMarkPressed: {
+                showProfileModal = false
+            }
+        )
+        .padding(paddingProfileModal)
+        .transition(.slide)
+    }
+    
     private var conversationSection: some View {
         ScrollView {
             LazyVStack(spacing: messageSpacing) {
@@ -59,7 +81,9 @@ struct ChatView: View {
                     ChatBubbleViewBuilder(
                         message: message,
                         isCurrentUser: isCurrentUser,
-                        avatarImageUrlString: avatarImageUrlString
+                        avatarImageUrlString: avatarImageUrlString,
+                        onAvatarImagePressed: onAvatarImagePressed
+                        
                     )
                     .id(message.id)
                 }
@@ -123,7 +147,7 @@ struct ChatView: View {
             scrollPosition = message.id
             inputText = ""
         } catch {
-            alert = AnyAppAlert(title: error.localizedDescription)
+            showAlert = AnyAppAlert(title: error.localizedDescription)
         }
     }
     
@@ -144,6 +168,10 @@ struct ChatView: View {
                 )
             }
         )
+    }
+    
+    private func onAvatarImagePressed() {
+        showProfileModal = true
     }
 }
 

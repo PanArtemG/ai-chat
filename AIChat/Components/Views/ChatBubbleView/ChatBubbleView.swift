@@ -13,6 +13,7 @@ struct ChatBubbleView: View {
     var messageColor: Color
     var showAvatar: Bool = true
     var imageUrlString: String?
+    var onAvatarImagePressed: (() -> Void)?
     
     private let spacing: CGFloat = 8
     private let imageSize: CGFloat = 45
@@ -27,7 +28,9 @@ struct ChatBubbleView: View {
                 ZStack {
                     if let imageUrlString {
                         ImageLoaderView(urlString: imageUrlString)
-                        
+                            .anyButton {
+                                onAvatarImagePressed?()
+                            }
                     } else {
                         Rectangle()
                             .fill(.secondary)
@@ -85,5 +88,4 @@ struct ChatBubbleView: View {
         }
     }
     .padding(8)
-    
 }
