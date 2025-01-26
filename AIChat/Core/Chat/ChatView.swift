@@ -18,6 +18,8 @@ struct ChatView: View {
     @State private var showChatSettings: AnyAppAlert?
     @State private var showProfileModal: Bool = false
     
+    var avatarId: String = Avatar.mock.id
+    
     private let messageSpacing: CGFloat = 24
     private let cornerRadius: CGFloat = 100
     private let paddingConversationSection: CGFloat = 8
@@ -125,7 +127,7 @@ struct ChatView: View {
             .background(Color(uiColor: .secondarySystemBackground))
     }
     
-    // MARK: - Actions
+    // MARK: - Busyness logik
     private func onSendMessagePressed() {
         guard let currentUser else {
             return
