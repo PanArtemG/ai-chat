@@ -19,4 +19,8 @@ enum CharacterOption: String, CaseIterable, Hashable {
     static var `default`: Self {
         .ant
     }
+    
+    var pluralized: String {
+        rawValue.appending("s")
+    }
 }
