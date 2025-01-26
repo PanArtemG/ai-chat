@@ -13,15 +13,18 @@ struct ProfileView: View {
     @State private var currentUser: User? = .mock
     @State private var myAvatars: [Avatar] = []
     @State private var isLoading: Bool = true
+    @State private var path: [NavigationPathOption] = []
     
     private let avatarSize: CGFloat = 100
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 myInfoSection
                 myAvatarsSection
             }
+            .navigationTitle("Profile")
+            .navigationDestinationForCoreModule(path: $path)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     settingsButton
@@ -32,7 +35,7 @@ struct ProfileView: View {
             SettingsView()
         }
         .fullScreenCover(isPresented: $showCreateAvatarView) {
-            Text("CreateAvatarView")
+            CreateAvatarView()
         }
         .task {
             await loadData()
@@ -76,9 +79,9 @@ struct ProfileView: View {
                         title: avatar.name,
                         subtitle: nil
                     )
-                    .anyButton(.highlight, action: {
-                        
-                    })
+                    .anyButton(.highlight) {
+                        onAvatarPressed(avatar: avatar)
+                    }
                     .removeListRowFormatting()
                 }
                 .onDelete { indexSet in
@@ -97,7 +100,7 @@ struct ProfileView: View {
         }
     }
     
-    // MARK: - Views components
+    // MARK: - View's components
     private var settingsButton: some View {
         Image(systemName: "gear")
             .font(.headline)
@@ -121,6 +124,11 @@ struct ProfileView: View {
     }
     
     // MARK: - Busyness logik
+    private func onAvatarPressed(avatar: Avatar) {
+        let pathOption: NavigationPathOption = .chat(avatarId: avatar.id)
+        path.append(pathOption)
+    }
+    
     private func onDeleteAvatar(indexSet: IndexSet) {
         guard let index = indexSet.first else {
             return
