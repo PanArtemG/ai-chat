@@ -8,7 +8,7 @@
 import Foundation
 
 /// A model representing a chat message, including metadata about the message's content, author, and timestamps.
-struct ChatMessage: Codable {
+struct ChatMessage: Identifiable {
     
     /// A unique identifier for the message.
     let id: String
