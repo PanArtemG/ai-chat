@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CharacterAction: String, CaseIterable, Hashable {
+enum CharacterAction: String {
     case smiling
     case sitting
     case standing

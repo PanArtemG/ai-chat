@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ChatRowCellViewBuilder: View {
+    
     var currentUserId: String? = ""
     var chat: Chat = .mock
     var getAvatar: () async -> Avatar?

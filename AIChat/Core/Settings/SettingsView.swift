@@ -40,7 +40,7 @@ struct SettingsView: View {
         }
     }
     
-    // MARK: - View's components
+    // MARK: - Views components
     private var accountSection: some View {
         Section {
             if isAnonymousUser {
