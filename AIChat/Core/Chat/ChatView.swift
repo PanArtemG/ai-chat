@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatView: View {
     @State private var messages: [ChatMessage] = ChatMessage.mocks
     @State private var avatar: Avatar? = .mock
-    @State private var currentUser: User? = .mock
+    @State private var currentUser: UserModel? = .mock
     @State private var inputText: String = ""
     @State private var scrollPosition: String?
     
