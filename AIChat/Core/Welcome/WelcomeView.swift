@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @Environment(AppState.self) private var root
+    
     @State var imageUrl = Constants.randomImageUrl
     @State var showSigInView: Bool = false
     
@@ -37,7 +39,10 @@ struct WelcomeView: View {
         .sheet(isPresented: $showSigInView) {
             CreateAccountView(
                 title: title,
-                subtitle: subtitle
+                subtitle: subtitle,
+                onDidSigIn: { isNewUser in
+                    handleDidSigIn(isNewUser: isNewUser)
+                }
             )
             .presentationDetents([.medium])
         }
@@ -97,7 +102,13 @@ struct WelcomeView: View {
     }
     
     // MARK: - Busyness logik
-    func onSigInPressed() {
+    private func handleDidSigIn(isNewUser: Bool) {
+        if !isNewUser {
+            // Push into tabbar view
+            root.updateViewState(showTabBarView: true)
+        }
+    }
+    private func onSigInPressed() {
         self.showSigInView = true
     }
 }

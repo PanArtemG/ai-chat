@@ -5,7 +5,7 @@
 //  Created by Artem Panasenko on 28.01.2025.
 //
 
-import FirebaseAuth
+import SwiftUI
 
 /// A structure representing user authentication information.
 struct UserAuthInfo: Sendable {
@@ -45,17 +45,5 @@ struct UserAuthInfo: Sendable {
         self.isAnonymous = isAnonymous
         self.creationDate = creationDate
         self.lastSignInDate = lastSignInDate
-    }
-    
-    /// Initializes a new instance of `UserAuthInfo` from a Firebase `User` object.
-    ///
-    /// - Parameter user: A Firebase `User` instance.
-    /// - Extracts relevant user authentication data from the provided `User` object.
-    internal init(user: User) {
-        self.uid = user.uid
-        self.email = user.email
-        self.isAnonymous = user.isAnonymous
-        self.creationDate = user.metadata.creationDate
-        self.lastSignInDate = user.metadata.lastSignInDate
     }
 }
