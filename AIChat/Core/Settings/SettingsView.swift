@@ -9,10 +9,13 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.authService) private var authService
     @Environment(AppState.self) private var appState
+    
     @State private var isPremium: Bool = false
     @State private var isAnonymousUser: Bool = false
     @State private var showCreateAccountView: Bool = false
+    @State private var showAlert: AnyAppAlert?
     
     private var accountStatusTextValue: String {
         if isPremium {
@@ -33,10 +36,16 @@ struct SettingsView: View {
                 applicationSection
             }
             .navigationTitle("Settings")
-            .sheet(isPresented: $showCreateAccountView) {
+            .sheet(isPresented: $showCreateAccountView, onDismiss: {
+                setAnonymousAccountStatus()
+            }, content: {
                 CreateAccountView()
                     .presentationDetents([.medium])
+            })
+            .onAppear {
+                setAnonymousAccountStatus()
             }
+            .showCustomAlert(alert: $showAlert)
         }
     }
     
@@ -64,7 +73,7 @@ struct SettingsView: View {
                 .foregroundStyle(.red)
                 .rowFormatting()
                 .anyButton(.highlight) {
-                    onSignOutPressed()
+                    onDeleteAccountPressed()
                 }
                 .removeListRowFormatting()
         } header: {
@@ -84,7 +93,7 @@ struct SettingsView: View {
             }
             .rowFormatting()
             .anyButton(.highlight) {
-                // TODO: bl
+                // TODO: BL
             }
             .disabled(!isPremium)
             .removeListRowFormatting()
@@ -117,7 +126,7 @@ struct SettingsView: View {
                 .foregroundStyle(.blue)
                 .rowFormatting()
                 .anyButton(.highlight) {
-                    // TODO: bl
+                    // TODO: BL
                 }
                 .removeListRowFormatting()
         } header: {
@@ -133,19 +142,55 @@ struct SettingsView: View {
     
     // MARK: - Busyness logik
     private func onSignOutPressed() {
-        // do some logic to sign user out of app
-        
-        dismiss()
         Task {
-            try? await Task.sleep(for: .seconds(1))
-            appState.updateViewState(showTabBarView: false)
+            do {
+                try authService.signOut()
+                await dismissView()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
         }
+    }
+    
+    private func dismissView() async {
+        dismiss()
+        try? await Task.sleep(for: .seconds(1))
+        appState.updateViewState(showTabBarView: false)
     }
     
     private func onCreateAccountPress() {
         // do some logic to create account
         
         showCreateAccountView = true
+    }
+    
+    private func setAnonymousAccountStatus() {
+        isAnonymousUser = authService.getAuthenticatedUser()?.isAnonymous ?? false
+    }
+    
+    private func onDeleteAccountPressed() {
+        showAlert = AnyAppAlert(
+            title: "Delete Account?",
+            subtitle: "This action cannot be undone. Your data will be permanently deleted from server.",
+            buttons: {
+                AnyView(
+                    Button("Delete", role: .destructive) {
+                        onDeleteAccountConfirmed()
+                    }
+                )
+            }
+        )
+    }
+    
+    private func onDeleteAccountConfirmed() {
+        Task {
+            do {
+                try await authService.deleteAccount()
+                await dismissView()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+        }
     }
 }
 
