@@ -44,7 +44,7 @@ struct FirebaseAuthService {
                 switch authErrorCode {
                 case .accountExistsWithDifferentCredential, .credentialAlreadyInUse:
                     if let secondaryCredential = error.userInfo["FIRAuthErrorUserInfoUpdatedCredentialKey"] as? AuthCredential {
-                        let result = try await Auth.auth().signIn(with: credential)
+                        let result = try await Auth.auth().signIn(with: secondaryCredential)
                         return result.asAuthInfo
                     }
                 default:
