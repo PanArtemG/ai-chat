@@ -165,7 +165,7 @@ struct SettingsView: View {
     }
     
     private func setAnonymousAccountStatus() {
-        isAnonymousUser = authService.getAuthenticatedUser()?.isAnonymous ?? false
+        isAnonymousUser = authService.getAuthenticatedUser()?.isAnonymous == true
     }
     
     private func onDeleteAccountPressed() {
@@ -194,12 +194,6 @@ struct SettingsView: View {
     }
 }
 
-// MARK: - Preview
-#Preview {
-    SettingsView()
-        .environment(AppState())
-}
-
 // MARK: - Extension
 fileprivate extension View {
     func rowFormatting() -> some View {
@@ -209,4 +203,23 @@ fileprivate extension View {
             .padding(.horizontal, 16)
             .background(Color.systemBackground)
     }
+}
+
+// MARK: - Preview
+#Preview("No auth") {
+    SettingsView()
+        .environment(\.authService, MockFirebaseAuthService(user: nil))
+        .environment(AppState())
+}
+
+#Preview("Anonymous") {
+    SettingsView()
+        .environment(\.authService, MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: true)))
+        .environment(AppState())
+}
+
+#Preview("Not anonymous") {
+    SettingsView()
+        .environment(\.authService, MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: false)))
+        .environment(AppState())
 }

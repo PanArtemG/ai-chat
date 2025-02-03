@@ -8,7 +8,7 @@
 import FirebaseAuth
 import SignInAppleAsync
 
-struct FirebaseAuthService {
+struct FirebaseAuthService: AuthService {
     
     func getAuthenticatedUser() -> UserAuthInfo? {
         guard let user = Auth.auth().currentUser else {
