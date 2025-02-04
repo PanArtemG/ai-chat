@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CreateAccountView: View {
-    @Environment(\.authService) private var authService
+    @Environment(AuthManager.self) private var authManager
     @Environment(\.dismiss) private var dismiss
     
     var title: String = "Create Account?"
@@ -52,7 +52,7 @@ struct CreateAccountView: View {
     private func onSignInWithApplePressed() {
         Task {
             do {
-                let result = try await authService.signInApple()
+                let result = try await authManager.signInApple()
                 
                 print("Did sign in with Apple!")
                 onDidSigIn?(result.isNewUser)
