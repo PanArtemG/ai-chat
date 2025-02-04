@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.authService) private var authService
+    @Environment(AuthManager.self) private var authManager
     @Environment(AppState.self) private var appState
     
     @State private var isPremium: Bool = false
@@ -144,7 +144,7 @@ struct SettingsView: View {
     private func onSignOutPressed() {
         Task {
             do {
-                try authService.signOut()
+                try authManager.signOut()
                 await dismissView()
             } catch {
                 showAlert = AnyAppAlert(error: error)
@@ -165,7 +165,7 @@ struct SettingsView: View {
     }
     
     private func setAnonymousAccountStatus() {
-        isAnonymousUser = authService.getAuthenticatedUser()?.isAnonymous == true
+        isAnonymousUser = authManager.auth?.isAnonymous == true
     }
     
     private func onDeleteAccountPressed() {
@@ -185,7 +185,7 @@ struct SettingsView: View {
     private func onDeleteAccountConfirmed() {
         Task {
             do {
-                try await authService.deleteAccount()
+                try await authManager.deleteAccount()
                 await dismissView()
             } catch {
                 showAlert = AnyAppAlert(error: error)
@@ -208,18 +208,18 @@ fileprivate extension View {
 // MARK: - Preview
 #Preview("No auth") {
     SettingsView()
-        .environment(\.authService, MockFirebaseAuthService(user: nil))
+        .environment(AuthManager(service: MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: true))))
         .environment(AppState())
 }
 
 #Preview("Anonymous") {
     SettingsView()
-        .environment(\.authService, MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: true)))
+        .environment(AuthManager(service: MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: true))))
         .environment(AppState())
 }
 
 #Preview("Not anonymous") {
     SettingsView()
-        .environment(\.authService, MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: false)))
+        .environment(AuthManager(service: MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: false))))
         .environment(AppState())
 }

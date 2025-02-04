@@ -14,6 +14,12 @@ struct MockFirebaseAuthService: AuthService {
         currentUser = user
     }
     
+    func addAuthenticatedUserListener(onListenerAttached: (any NSObjectProtocol) -> Void) -> AsyncStream<UserAuthInfo?> {
+        AsyncStream { continuation in
+            continuation.yield(currentUser)
+        }
+    }
+    
     func getAuthenticatedUser() -> UserAuthInfo? {
         currentUser
     }
