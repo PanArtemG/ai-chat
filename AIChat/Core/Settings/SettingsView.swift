@@ -9,10 +9,13 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(AuthManager.self) private var authManager
     @Environment(AppState.self) private var appState
+    
     @State private var isPremium: Bool = false
     @State private var isAnonymousUser: Bool = false
     @State private var showCreateAccountView: Bool = false
+    @State private var showAlert: AnyAppAlert?
     
     private var accountStatusTextValue: String {
         if isPremium {
@@ -33,10 +36,16 @@ struct SettingsView: View {
                 applicationSection
             }
             .navigationTitle("Settings")
-            .sheet(isPresented: $showCreateAccountView) {
+            .sheet(isPresented: $showCreateAccountView, onDismiss: {
+                setAnonymousAccountStatus()
+            }, content: {
                 CreateAccountView()
                     .presentationDetents([.medium])
+            })
+            .onAppear {
+                setAnonymousAccountStatus()
             }
+            .showCustomAlert(alert: $showAlert)
         }
     }
     
@@ -64,7 +73,7 @@ struct SettingsView: View {
                 .foregroundStyle(.red)
                 .rowFormatting()
                 .anyButton(.highlight) {
-                    onSignOutPressed()
+                    onDeleteAccountPressed()
                 }
                 .removeListRowFormatting()
         } header: {
@@ -84,7 +93,7 @@ struct SettingsView: View {
             }
             .rowFormatting()
             .anyButton(.highlight) {
-                // TODO: bl
+                // TODO: BL
             }
             .disabled(!isPremium)
             .removeListRowFormatting()
@@ -117,7 +126,7 @@ struct SettingsView: View {
                 .foregroundStyle(.blue)
                 .rowFormatting()
                 .anyButton(.highlight) {
-                    // TODO: bl
+                    // TODO: BL
                 }
                 .removeListRowFormatting()
         } header: {
@@ -133,13 +142,20 @@ struct SettingsView: View {
     
     // MARK: - Busyness logik
     private func onSignOutPressed() {
-        // do some logic to sign user out of app
-        
-        dismiss()
         Task {
-            try? await Task.sleep(for: .seconds(1))
-            appState.updateViewState(showTabBarView: false)
+            do {
+                try authManager.signOut()
+                await dismissView()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
         }
+    }
+    
+    private func dismissView() async {
+        dismiss()
+        try? await Task.sleep(for: .seconds(1))
+        appState.updateViewState(showTabBarView: false)
     }
     
     private func onCreateAccountPress() {
@@ -147,12 +163,35 @@ struct SettingsView: View {
         
         showCreateAccountView = true
     }
-}
-
-// MARK: - Preview
-#Preview {
-    SettingsView()
-        .environment(AppState())
+    
+    private func setAnonymousAccountStatus() {
+        isAnonymousUser = authManager.auth?.isAnonymous == true
+    }
+    
+    private func onDeleteAccountPressed() {
+        showAlert = AnyAppAlert(
+            title: "Delete Account?",
+            subtitle: "This action cannot be undone. Your data will be permanently deleted from server.",
+            buttons: {
+                AnyView(
+                    Button("Delete", role: .destructive) {
+                        onDeleteAccountConfirmed()
+                    }
+                )
+            }
+        )
+    }
+    
+    private func onDeleteAccountConfirmed() {
+        Task {
+            do {
+                try await authManager.deleteAccount()
+                await dismissView()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+        }
+    }
 }
 
 // MARK: - Extension
@@ -164,4 +203,23 @@ fileprivate extension View {
             .padding(.horizontal, 16)
             .background(Color.systemBackground)
     }
+}
+
+// MARK: - Preview
+#Preview("No auth") {
+    SettingsView()
+        .environment(AuthManager(service: MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: true))))
+        .environment(AppState())
+}
+
+#Preview("Anonymous") {
+    SettingsView()
+        .environment(AuthManager(service: MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: true))))
+        .environment(AppState())
+}
+
+#Preview("Not anonymous") {
+    SettingsView()
+        .environment(AuthManager(service: MockFirebaseAuthService(user: UserAuthInfo.mock(isAnonymous: false))))
+        .environment(AppState())
 }

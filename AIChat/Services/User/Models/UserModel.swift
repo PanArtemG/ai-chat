@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  UserModel.swift
 //  AIChat
 //
 //  Created by Artem Panasenko on 17.01.2025.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A model representing a user in the application.
-struct User {
+struct UserModel {
     /// A unique identifier for the user.
     let id: String
     
