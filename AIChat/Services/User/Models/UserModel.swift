@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import IdentifiableByString
 
 /// A model representing a user in the application.
-struct UserModel: Codable {
+struct UserModel: Codable, StringIdentifiable {
     /// A unique identifier for the user.
     let id: String
     
