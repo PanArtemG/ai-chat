@@ -1,5 +1,5 @@
 //
-//  User+Mocks.swift
+//  UserModel+Mocks.swift
 //  AIChat
 //
 //  Created by Artem Panasenko on 17.01.2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension User {
+extension UserModel {
     // MARK: - Mocks
     static var mock: Self {
         mocks[0]
@@ -15,28 +15,28 @@ extension User {
     
     static var mocks: [Self] {
         [
-            User(
+            UserModel(
                 id: "user1",
                 createdAt: Date().addingTimeInterval(days: -30),
                 updatedAt: Date().addingTimeInterval(days: -1),
                 completeOnboarding: true,
                 profileColorHex: "#FF5733" // Orange-red
             ),
-            User(
+            UserModel(
                 id: "user2",
                 createdAt: Date().addingTimeInterval(days: -60),
                 updatedAt: Date().addingTimeInterval(days: -7),
                 completeOnboarding: false,
                 profileColorHex: "#33FF57" // Green
             ),
-            User(
+            UserModel(
                 id: "user3",
                 createdAt: Date().addingTimeInterval(days: -15),
                 updatedAt: Date().addingTimeInterval(days: -2),
                 completeOnboarding: true,
                 profileColorHex: "#3357FF" // Blue
             ),
-            User(
+            UserModel(
                 id: "user4",
                 createdAt: Date().addingTimeInterval(days: -90),
                 updatedAt: Date().addingTimeInterval(days: -10),

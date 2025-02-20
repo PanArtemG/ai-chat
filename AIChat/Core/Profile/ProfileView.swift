@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     @State private var showSettingsView = false
     @State private var showCreateAvatarView = false
-    @State private var currentUser: User? = .mock
+    @State private var currentUser: UserModel? = .mock
     @State private var myAvatars: [Avatar] = []
     @State private var isLoading: Bool = true
     @State private var path: [NavigationPathOption] = []

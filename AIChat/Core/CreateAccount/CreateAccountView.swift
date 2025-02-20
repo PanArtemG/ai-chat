@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct CreateAccountView: View {
+    @Environment(AuthManager.self) private var authManager
+    @Environment(\.dismiss) private var dismiss
+    
     var title: String = "Create Account?"
     var subtitle: String = "Don't lose your data! Connect to ab SSO provider to save your account."
-
+    var onDidSigIn: ((_ isNewUser: Bool) -> Void)?
+    
+    private let spacing: CGFloat = 24
+    private let cornerRadius: CGFloat = 10
+    private let height: CGFloat = 55
+    private let paddingTop: CGFloat = 40
+    
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: spacing) {
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.largeTitle)
@@ -25,17 +34,33 @@ struct CreateAccountView: View {
             
             SignInWithAppleButtonView(
                 type: .signIn,
-                style: .black, cornerRadius: 10
+                style: .black,
+                cornerRadius: cornerRadius
             )
-            .frame(height: 55)
+            .frame(height: height)
             .anyButton(.press) {
-                
+                onSignInWithApplePressed()
             }
             
             Spacer()
         }
         .padding()
-        .padding(.top, 40)
+        .padding(.top, paddingTop)
+    }
+    
+    // MARK: - Busyness logik
+    private func onSignInWithApplePressed() {
+        Task {
+            do {
+                let result = try await authManager.signInApple()
+                
+                print("Did sign in with Apple!")
+                onDidSigIn?(result.isNewUser)
+                dismiss()
+            } catch {
+                print("Error signing in with Apple: \(error)")
+            }
+        }
     }
 }
 
