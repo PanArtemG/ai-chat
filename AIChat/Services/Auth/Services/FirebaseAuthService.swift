@@ -34,6 +34,11 @@ struct FirebaseAuthService: AuthService {
     
     func signInAnonymously() async throws -> (user: UserAuthInfo, isNewUser: Bool) {
         let result = try await Auth.auth().signInAnonymously()
+        
+        guard let currentUser = Auth.auth().currentUser else {
+            throw AuthError.userNotFound
+        }
+        
         return result.asAuthInfo
     }
     

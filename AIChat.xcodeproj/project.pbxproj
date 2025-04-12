@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B22C1CCE2D2C0FFC000155DF /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = B22C1CCD2D2C0FFC000155DF /* SDWebImageSwiftUI */; };
 		B2556A102D4E8296009BFA9F /* SignInAppleAsync in Frameworks */ = {isa = PBXBuildFile; productRef = B2556A0F2D4E8296009BFA9F /* SignInAppleAsync */; };
+		B27D2FC22D675A2700F5060B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B27D2FC12D675A2700F5060B /* FirebaseFirestore */; };
+		B27D2FC52D67648C00F5060B /* SwiftfulFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B27D2FC42D67648C00F5060B /* SwiftfulFirestore */; };
 		B29771B02D492F0E00AF802A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B29771AF2D492F0E00AF802A /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
@@ -72,8 +74,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B22C1CCE2D2C0FFC000155DF /* SDWebImageSwiftUI in Frameworks */,
+				B27D2FC22D675A2700F5060B /* FirebaseFirestore in Frameworks */,
 				B29771B02D492F0E00AF802A /* FirebaseAuth in Frameworks */,
 				B2556A102D4E8296009BFA9F /* SignInAppleAsync in Frameworks */,
+				B27D2FC52D67648C00F5060B /* SwiftfulFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +104,7 @@
 				B26AC92E2D297E5D0081E3AA /* AIChat */,
 				B26AC93F2D297E5E0081E3AA /* AIChatTests */,
 				B26AC9492D297E5E0081E3AA /* AIChatUITests */,
+				B27D2FC02D675A2700F5060B /* Frameworks */,
 				B26AC92D2D297E5D0081E3AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +117,13 @@
 				B26AC9462D297E5E0081E3AA /* AIChatUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B27D2FC02D675A2700F5060B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +150,8 @@
 				B22C1CCD2D2C0FFC000155DF /* SDWebImageSwiftUI */,
 				B29771AF2D492F0E00AF802A /* FirebaseAuth */,
 				B2556A0F2D4E8296009BFA9F /* SignInAppleAsync */,
+				B27D2FC12D675A2700F5060B /* FirebaseFirestore */,
+				B27D2FC42D67648C00F5060B /* SwiftfulFirestore */,
 			);
 			productName = AIChat;
 			productReference = B26AC92C2D297E5D0081E3AA /* AIChat.app */;
@@ -225,6 +239,7 @@
 				B22C1CCC2D2C0FFC000155DF /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				B29771AE2D492F0E00AF802A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				B2556A0E2D4E8296009BFA9F /* XCRemoteSwiftPackageReference "SignInAppleAsync" */,
+				B27D2FC32D67648C00F5060B /* XCRemoteSwiftPackageReference "SwiftfulFirestore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B26AC92D2D297E5D0081E3AA /* Products */;
@@ -649,6 +664,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		B27D2FC32D67648C00F5060B /* XCRemoteSwiftPackageReference "SwiftfulFirestore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftfulThinking/SwiftfulFirestore.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.2;
+			};
+		};
 		B29771AE2D492F0E00AF802A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -669,6 +692,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B2556A0E2D4E8296009BFA9F /* XCRemoteSwiftPackageReference "SignInAppleAsync" */;
 			productName = SignInAppleAsync;
+		};
+		B27D2FC12D675A2700F5060B /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B29771AE2D492F0E00AF802A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		B27D2FC42D67648C00F5060B /* SwiftfulFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B27D2FC32D67648C00F5060B /* XCRemoteSwiftPackageReference "SwiftfulFirestore" */;
+			productName = SwiftfulFirestore;
 		};
 		B29771AF2D492F0E00AF802A /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

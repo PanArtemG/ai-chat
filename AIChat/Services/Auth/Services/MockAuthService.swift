@@ -1,5 +1,5 @@
 //
-//  MockFirebaseAuthService.swift
+//  MockAuthService.swift
 //  AIChat
 //
 //  Created by Artem Panasenko on 03.02.2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MockFirebaseAuthService: AuthService {
+struct MockAuthService: AuthService {
     let currentUser: UserAuthInfo?
     
     init(user: UserAuthInfo? = nil) {
