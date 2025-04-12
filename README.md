@@ -3,6 +3,9 @@
 **AIChat** is a learning iOS application developed as part of the [SwiftUI Advanced Architecture](https://www.swiftful-thinking.com/offers/REyNLwwH/checkout?coupon_code=LAUNCH3) course by Swiftful Thinking.  
 The project focuses on building a scalable, testable, and modular SwiftUI-based app using modern architectural principles and best practices.
 
+> 🚧 **Project Status**: This app is currently under active development.  
+> New features, refinements, and improvements are being added continuously as part of the learning process.
+
 ---
 
 ## 📱 Overview
