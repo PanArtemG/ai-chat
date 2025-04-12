@@ -52,7 +52,6 @@ AIChat is an AI-powered chat app that allows users to:
 ## 📝 License
 
 This project is intended **for personal learning and development purposes only**.  
-All rights to the course content belong to [Swiftful Thinking](https://www.swiftful-thinking.com).
 
 ---
 
