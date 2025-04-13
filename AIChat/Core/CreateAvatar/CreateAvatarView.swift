@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CreateAvatarView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(AIManager.self) var aiManager
+    
     @State private var avatarName: String = ""
     @State private var characterOption: CharacterOption = .default
     @State private var characterAction: CharacterAction = .default
@@ -120,6 +122,7 @@ struct CreateAvatarView: View {
                             }
                         }
                     }
+                    .clipShape(Circle())
             }
             .frame(maxWidth: .infinity)
             .removeListRowFormatting()
@@ -158,8 +161,18 @@ struct CreateAvatarView: View {
         isGenerating = true
         
         Task {
-            try? await Task.sleep(for: .seconds(3))
-            generatedAvatar = UIImage(systemName: "person.circle.fill")
+            do {
+                let prompt = AvatarDescriptionBuilder(
+                    option: characterOption,
+                    action: characterAction,
+                    location: characterLocation
+                ).characterDescription
+                
+                generatedAvatar = try await aiManager.generateImage(input: prompt)
+            } catch {
+                print("Error generating avatar: \(error)")
+            }
+            
             isGenerating = false
         }
     }
@@ -182,4 +195,5 @@ struct CreateAvatarView: View {
 // MARK: - Preview
 #Preview {
     CreateAvatarView()
+        .environment(AIManager(service: AIServiceMock()))
 }

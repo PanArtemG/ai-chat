@@ -21,9 +21,9 @@ struct AvatarDescriptionBuilder {
     ///   - characterAction: as `CharacterAction`
     ///   - characterLocation: as `CharacterLocation`
     init(
-        _ characterOption: CharacterOption? = nil,
-        _ characterAction: CharacterAction? = nil,
-        _ characterLocation: CharacterLocation? = nil
+        option characterOption: CharacterOption? = nil,
+        action characterAction: CharacterAction? = nil,
+        location characterLocation: CharacterLocation? = nil
     ) {
         self.characterOption = characterOption ?? .default
         self.characterAction = characterAction ?? .default
