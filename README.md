@@ -21,7 +21,7 @@ AIChat is an AI-powered chat app that allows users to:
 ## 🛠️ Technologies & Architecture
 
 - **Swift 6** with **Swift Concurrency** and the new **Observation Framework**
-- **Architectures**: MVC, MVVM, VIPER, RIBs
+- **Architectures**: MVC -> MVVM -> VIPER -> RIBs
 - **Local storage**: SwiftData, UserDefaults, FileManager
 - **Remote storage**: Firebase
 - **Authentication**: Anonymous & Sign in with Apple
