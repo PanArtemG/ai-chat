@@ -8,7 +8,7 @@
 import Foundation
 
 /// A model representing an avatar with various customizable options, metadata, and a descriptive summary.
-struct Avatar: Hashable {
+struct Avatar: Hashable, Codable {
     
     /// A unique identifier for the avatar.
     let id: String
@@ -26,7 +26,7 @@ struct Avatar: Hashable {
     let characterLocation: CharacterLocation?
     
     /// The URL of the avatar's profile image, if provided.
-    let profileImageUrl: String?
+    private(set) var profileImageUrl: String?
     
     /// The unique identifier of the author who created the avatar, if available.
     let authorId: String?
@@ -44,6 +44,22 @@ struct Avatar: Hashable {
         AvatarDescriptionBuilder(avatar: self).characterDescription
     }
     
+    mutating func updateProfileImageUrl(_ urlString: String) {
+        profileImageUrl = urlString
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case characterOption = "character_option"
+        case characterAction = "character_action"
+        case characterLocation = "character_location"
+        case profileImageUrl = "profile_image_url"
+        case authorId = "author_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+    
     /// Initializes a new `Avatar` instance.
     ///
     /// - Parameters:
@@ -57,7 +73,7 @@ struct Avatar: Hashable {
     ///   - createdAt: The timestamp indicating when the avatar was created, if available. (Optional, defaults to `nil`)
     ///   - updatedAt: The timestamp indicating the last time the avatar was updated, if available. (Optional, defaults to `nil`)
     init(
-        id: String,
+        id: String = UUID().uuidString,
         name: String? = nil,
         characterOption: CharacterOption? = nil,
         characterAction: CharacterAction? = nil,
