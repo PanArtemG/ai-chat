@@ -8,7 +8,7 @@
 import FirebaseFirestore
 import SwiftfulFirestore
 
-struct FirebaseAvatarService: AvatarServiceProtocol {
+struct FirebaseAvatarService: RemoteAvatarServiceProtocol {
     var collection: CollectionReference {
         Firestore.firestore().collection(rootPath)
     }
@@ -26,6 +26,10 @@ struct FirebaseAvatarService: AvatarServiceProtocol {
         
         // Upload the avatar
         try collection.document(avatar.id).setData(from: avatar, merge: true)
+    }
+    
+    func getAvatar(id: String) async throws -> Avatar {
+        try await collection.getDocument(id: id)
     }
     
     func getFeaturedAvatars() async throws -> [Avatar] {
