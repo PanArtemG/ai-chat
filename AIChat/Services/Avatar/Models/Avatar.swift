@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import IdentifiableByString
 
 /// A model representing an avatar with various customizable options, metadata, and a descriptive summary.
-struct Avatar: Hashable, Codable {
+struct Avatar: Hashable, Codable, StringIdentifiable {
     
     /// A unique identifier for the avatar.
     let id: String
