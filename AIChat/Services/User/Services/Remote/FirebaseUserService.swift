@@ -16,6 +16,7 @@ struct FirebaseUserService: RemoteUserServiceProtocol {
     }
     
     func saveUser(_ user: UserModel) async throws {
+//        try await collection.document(user.id).setData(from: user, merge: true)
         try await collection.setDocument(document: user)
     }
     

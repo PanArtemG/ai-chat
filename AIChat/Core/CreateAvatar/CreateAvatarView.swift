@@ -9,6 +9,10 @@ import SwiftUI
 
 struct CreateAvatarView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(AIManager.self) var aiManager
+    @Environment(AuthManager.self) var authManager
+    @Environment(AvatarManager.self) var avatarManager
+    
     @State private var avatarName: String = ""
     @State private var characterOption: CharacterOption = .default
     @State private var characterAction: CharacterAction = .default
@@ -16,6 +20,7 @@ struct CreateAvatarView: View {
     @State private var generatedAvatar: UIImage?
     @State private var isGenerating: Bool = false
     @State private var isSaving: Bool = false
+    @State private var showAlert: AnyAppAlert?
     
     private var isGenerateButtonDisabled: Bool {
         isSaving || isGenerating || avatarName.isEmpty
@@ -41,6 +46,7 @@ struct CreateAvatarView: View {
                     backButton
                 }
             }
+            .showCustomAlert(alert: $showAlert)
         }
     }
     
@@ -120,6 +126,7 @@ struct CreateAvatarView: View {
                             }
                         }
                     }
+                    .clipShape(Circle())
             }
             .frame(maxWidth: .infinity)
             .removeListRowFormatting()
@@ -158,20 +165,48 @@ struct CreateAvatarView: View {
         isGenerating = true
         
         Task {
-            try? await Task.sleep(for: .seconds(3))
-            generatedAvatar = UIImage(systemName: "person.circle.fill")
+            do {
+                let prompt = AvatarDescriptionBuilder(
+                    option: characterOption,
+                    action: characterAction,
+                    location: characterLocation
+                ).characterDescription
+                
+                generatedAvatar = try await aiManager.generateImage(input: prompt)
+            } catch {
+                print("Error generating avatar: \(error)")
+            }
+            
             isGenerating = false
         }
     }
     
     private func onSavePressed() {
+        guard let generatedAvatar else {
+            return
+        }
         isSaving = true
         
-        Task {
-            try? await Task.sleep(for: .seconds(3))
-            isSaving = false
+        do {
+            try TextValidationHelper.checkIfTextIsValid(text: avatarName)
+            let userId = try authManager.getAuthId()
+            let avatar = Avatar(
+                name: avatarName,
+                characterOption: characterOption,
+                characterAction: characterAction,
+                characterLocation: characterLocation,
+                profileImageUrl: nil,
+                authorId: userId,
+                createdAt: .now
+            )
+            Task {
+                try await avatarManager.create(avatar, image: generatedAvatar)
+            }
             dismiss()
+        } catch {
+            showAlert = AnyAppAlert(error: error)
         }
+        isSaving = false
     }
     
     private func onBackButtonPress() {
@@ -182,4 +217,7 @@ struct CreateAvatarView: View {
 // MARK: - Preview
 #Preview {
     CreateAvatarView()
+        .environment(AIManager(service: AIServiceMock()))
+        .environment(AuthManager(service: MockAuthService(user: .mock())))
+        .environment(AvatarManager(service: MockAvatarService()))
 }
