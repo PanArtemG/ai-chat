@@ -162,5 +162,5 @@ struct ExploreView: View {
 // MARK: - Preview
 #Preview {
     ExploreView()
-        .environment(AvatarManager(service: MockAvatarService()))
+        .environment(AvatarManager(remote: MockAvatarService(), local: MockLocalAvatarPersistence()))
 }

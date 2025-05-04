@@ -164,5 +164,5 @@ struct ProfileView: View {
         .environment(AppState())
         .environment(UserManager(services: MockUserServices(user: .mock)))
         .environment(AuthManager(service: MockAuthService()))
-        .environment(AvatarManager(service: MockAvatarService()))
+        .environment(AvatarManager(remote: MockAvatarService(), local: MockLocalAvatarPersistence()))
 }

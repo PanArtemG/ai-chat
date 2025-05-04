@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct ChatView: View {
+    @Environment(AvatarManager.self) private var avatarManager
     @State private var messages: [ChatMessage] = ChatMessage.mocks
-    @State private var avatar: Avatar? = .mock
+    @State private var avatar: Avatar?
     @State private var currentUser: UserModel? = .mock
     @State private var inputText: String = ""
     @State private var scrollPosition: String?
@@ -18,8 +19,8 @@ struct ChatView: View {
     @State private var showChatSettings: AnyAppAlert?
     @State private var showProfileModal: Bool = false
     
-    var avatarId: String = Avatar.mock.id
-    
+    var avatarId: String = Avatar.mocks.shuffled().first!.id
+
     private let messageSpacing: CGFloat = 24
     private let cornerRadius: CGFloat = 100
     private let paddingConversationSection: CGFloat = 8
@@ -97,8 +98,26 @@ struct ChatView: View {
         .rotationEffect(.degrees(180))
         .scrollPosition(id: $scrollPosition, anchor: .bottom)
         .animation(.default, value: scrollPosition)
+        .task {
+            await loadAvatar()
+        }
     }
     
+    private func loadAvatar() async {
+        do {
+            let avatar = try await avatarManager.getAvatar(id: avatarId)
+            self.avatar = avatar
+            try? avatarManager.addRecentAvatar(avatar)
+        } catch {
+            // FIXME: Remove after fix DB connection
+            if let avatar = try? await MockAvatarService().getAvatar(id: avatarId) {
+                self.avatar = avatar
+                try? avatarManager.addRecentAvatar(avatar)
+            }
+            print("Error loading avatar: \(error)")
+        }
+        
+    }
     private var textFieldSection: some View {
         TextField("Type your message...", text: $inputText)
             .keyboardType(.alphabet)
@@ -181,5 +200,6 @@ struct ChatView: View {
 #Preview {
     NavigationStack {
         ChatView()
+            .environment(AvatarManager(remote: MockAvatarService(), local: MockLocalAvatarPersistence()))
     }
 }
