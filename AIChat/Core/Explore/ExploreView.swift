@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ExploreView: View {
-    @State private var featuredAvatars: [Avatar] = Avatar.mocks
+    @Environment(AvatarManager.self) private var avatarManager
+    @State private var featuredAvatars: [Avatar] = []
     @State private var categories: [CharacterOption] = CharacterOption.allCases
-    @State private var popularAvatars: [Avatar] = Avatar.mocks
+    @State private var popularAvatars: [Avatar] = []
     @State private var path: [NavigationPathOption] = []
     
     private let categorySectionHeight: CGFloat = 140
@@ -19,12 +20,55 @@ struct ExploreView: View {
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                featuredSection
-                categorySection
-                popularSection
+                if featuredAvatars.isEmpty && popularAvatars.isEmpty {
+                    ProgressView()
+                        .padding(40)
+                        .frame(maxWidth: .infinity)
+                        .removeListRowFormatting()
+                }
+                if !featuredAvatars.isEmpty {
+                    featuredSection
+                }
+                
+                if !popularAvatars.isEmpty {
+                    categorySection
+                    popularSection
+                }
             }
             .navigationTitle("Explore")
             .navigationDestinationForCoreModule(path: $path)
+            .task {
+                await loadFeaturedAvatars()
+            }
+            .task {
+                await loadPopularAvatars()
+            }
+        }
+    }
+    
+    private func loadFeaturedAvatars() async {
+        guard featuredAvatars.isEmpty else {
+            return
+        }
+        do {
+            featuredAvatars = try await avatarManager.getFeaturedAvatars()
+        } catch {
+            // FIXME: Remove after fix DB connection
+            featuredAvatars = Avatar.mocks.shuffled().first(upTo: 5) ?? []
+            print("Error loading featured avatars: \(error)")
+        }
+    }
+    
+    private func loadPopularAvatars() async {
+        guard popularAvatars.isEmpty else {
+            return
+        }
+        do {
+            popularAvatars = try await avatarManager.getPopularAvatars()
+        } catch {
+            // FIXME: Remove after fix DB connection
+            popularAvatars = Avatar.mocks.shuffled()
+            print("Error loading popular avatars: \(error)")
         }
     }
     
@@ -118,4 +162,5 @@ struct ExploreView: View {
 // MARK: - Preview
 #Preview {
     ExploreView()
+        .environment(AvatarManager(service: MockAvatarService()))
 }

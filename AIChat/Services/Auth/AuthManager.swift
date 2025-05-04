@@ -10,11 +10,8 @@ import SwiftUI
 @MainActor
 @Observable
 class AuthManager {
-    
     private let service: AuthService
-    
     private(set) var auth: UserAuthInfo?
-    
     private var listener: (any NSObjectProtocol)?
     
     init(service: AuthService) {

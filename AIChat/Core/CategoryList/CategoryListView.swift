@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct CategoryListView: View {
+    @Environment(AvatarManager.self) private var avatarManager
+    @State var avatars: [Avatar] = []
+    @State private var showAlert: AnyAppAlert?
+    @State private var isLoading: Bool = true
+    
     @Binding var path: [NavigationPathOption]
-    @State var avatars: [Avatar] = Avatar.mocks
     
     var category: CharacterOption = .alien
     var imageUrlString: String = Constants.randomImageUrl
@@ -24,20 +28,32 @@ struct CategoryListView: View {
             )
             .removeListRowFormatting()
             
-            ForEach(avatars, id: \.self) { avatar in
-                CustomListCellView(
-                    imageUrl: avatar.profileImageUrl,
-                    title: avatar.name,
-                    subtitle: avatar.characteDescription
-                )
-                .anyButton(.highlight) {
-                    onAvatarPressed(avatar: avatar)
+            if avatars.isEmpty && isLoading{
+                ProgressView()
+                    .padding(40)
+                    .frame(maxWidth: .infinity)
+                    .listRowSeparator(.hidden)
+                    .removeListRowFormatting()
+            } else {
+                ForEach(avatars, id: \.self) { avatar in
+                    CustomListCellView(
+                        imageUrl: avatar.profileImageUrl,
+                        title: avatar.name,
+                        subtitle: avatar.characteDescription
+                    )
+                    .anyButton(.highlight) {
+                        onAvatarPressed(avatar: avatar)
+                    }
+                    .removeListRowFormatting()
                 }
-                .removeListRowFormatting()
             }
         }
         .ignoresSafeArea()
         .listStyle(.plain)
+        .showCustomAlert(alert: $showAlert)
+        .task {
+            await loadAvatars()
+        }
     }
     
     // MARK: - Busyness logik
@@ -45,9 +61,21 @@ struct CategoryListView: View {
         let pathOption: NavigationPathOption = .chat(avatarId: avatar.id)
         path.append(pathOption)
     }
+    
+    private func loadAvatars() async {
+        do {
+            avatars = try await avatarManager.getAvatarsForCategory(category: category)
+        } catch {
+            // FIXME: Remove after fix DB connection
+            avatars = Avatar.mocks.filter { $0.characterOption == category }
+            showAlert = AnyAppAlert(error: error)
+        }
+        isLoading = false
+    }
 }
 
 // MARK: - Preview
 #Preview {
     CategoryListView(path: .constant([]))
+        .environment(AvatarManager(service: MockAvatarService()))
 }

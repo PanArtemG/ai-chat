@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CharacterLocation: String, CaseIterable, Hashable {
+enum CharacterLocation: String, CaseIterable, Hashable, Codable {
     case party
     case office
     case museum
